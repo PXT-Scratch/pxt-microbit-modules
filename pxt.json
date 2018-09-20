@@ -4,13 +4,13 @@
     "description": "makecode Landzo Tianshu package for micro:bit",
     "license": "MIT",
     "dependencies": {
-        "core": "*"
-        "neopixel": "github:microsoft/pxt-neopixel#v0.6.2"
+        "core": "*",
+        "neopixel": "github:microsoft/pxt-neopixel#v0.6.2",
     },
     "files": [
         "README.md",
-        "main.ts"
-        "_locales/zh/landzo-strings.json"
+        "main.ts",
+        "_locales/zh/landzo-strings.json",
     ],
     "testFiles": [
         "test.ts"
