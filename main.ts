@@ -34,20 +34,55 @@ namespace landzobit {
     const STP_CHD_L = 3071
     const STP_CHD_H = 1023
 
+    // HT16K33 commands
+    const HT16K33_ADDRESS = 0x70
+    const HT16K33_BLINK_CMD = 0x80
+    const HT16K33_BLINK_DISPLAYON = 0x01
+    const HT16K33_BLINK_OFF = 0
+    const HT16K33_BLINK_2HZ = 1
+    const HT16K33_BLINK_1HZ = 2
+    const HT16K33_BLINK_HALFHZ = 3
+    const HT16K33_CMD_BRIGHTNESS = 0xE0
 
     export enum Servos {
         S1 = 0x01,
         S2 = 0x02,
         S3 = 0x03,
-        S4 = 0x04
+        S4 = 0x04,
+        S5 = 0x05,
+        S6 = 0x06,
+        S7 = 0x07,
+        S8 = 0x08
     }
 
     export enum Motors {
-        M1 = 0x1,
-        M2 = 0x2,
-        M3 = 0x3
+        M1A = 0x1,
+        M1B = 0x2,
+        M2A = 0x3,
+        M2B = 0x4
     }
 
+    export enum Steppers {
+        M1 = 0x1,
+        M2 = 0x2
+    }
+
+    export enum Turns {
+        //% blockId="T1B4" block="1/4"
+        T1B4 = 90,
+        //% blockId="T1B2" block="1/2"
+        T1B2 = 180,
+        //% blockId="T1B0" block="1"
+        T1B0 = 360,
+        //% blockId="T2B0" block="2"
+        T2B0 = 720,
+        //% blockId="T3B0" block="3"
+        T3B0 = 1080,
+        //% blockId="T4B0" block="4"
+        T4B0 = 1440,
+        //% blockId="T5B0" block="5"
+        T5B0 = 1800
+    }
 
     let initialized = false
     let initializedMatrix = false
@@ -146,6 +181,30 @@ namespace landzobit {
         setPwm((index - 1) * 2 + 1, 0, 0);
     }
 
+    function matrixInit() {
+        i2ccmd(HT16K33_ADDRESS, 0x21);// turn on oscillator
+        i2ccmd(HT16K33_ADDRESS, HT16K33_BLINK_CMD | HT16K33_BLINK_DISPLAYON | (0 << 1));
+        i2ccmd(HT16K33_ADDRESS, HT16K33_CMD_BRIGHTNESS | 0xF);
+    }
+
+    function matrixShow() {
+        matBuf[0] = 0x00;
+        pins.i2cWriteBuffer(HT16K33_ADDRESS, matBuf);
+    }
+
+
+    /**
+     * Init RGB pixels mounted on landzobit
+     */
+    //% blockId="landzobit_rgb" block="RGB"
+    //% weight=5
+    export function rgb(): neopixel.Strip {
+        if (!neoStrip) {
+            neoStrip = neopixel.create(DigitalPin.P16, 4, NeoPixelMode.RGB)
+        }
+
+        return neoStrip;
+    }
 
     /**
      * Servo Execute
@@ -264,6 +323,70 @@ namespace landzobit {
         for (let idx = 1; idx <= 4; idx++) {
             stopMotor(idx);
         }
+    }
+
+    //% blockId=landzobit_matrix_draw block="Matrix Draw|X %x|Y %y"
+    //% weight=69
+    export function MatrixDraw(x: number, y: number): void {
+        if (!initializedMatrix) {
+            matrixInit();
+            initializedMatrix = true;
+        }
+        let idx = y * 2 + x / 8;
+        matBuf[idx + 1] |= (1 << (x % 8));
+        matrixShow();
+    }
+
+	/*
+    //% blockId=landzobit_matrix_clean block="Matrix Clean|X %x|Y %y"
+    //% weight=68
+    export function MatrixClean(x: number, y: number): void {
+        if (!initializedMatrix) {
+            matrixInit();
+            initializedMatrix = true;
+        }
+        let idx = y * 2 + x / 8;
+		// todo: bitwise not throw err 
+        matBuf[idx + 1] &=~(1 << (x % 8));
+        matrixShow();
+    }
+	*/
+
+    //% blockId=landzobit_matrix_clear block="Matrix Clear"
+    //% weight=65
+    //% blockGap=50
+    export function MatrixClear(): void {
+        if (!initializedMatrix) {
+            matrixInit();
+            initializedMatrix = true;
+        }
+        for (let i = 0; i < 16; i++) {
+            matBuf[i + 1] = 0;
+        }
+        matrixShow();
+    }
+
+    //% blockId=landzobit_ultrasonic block="Ultrasonic|pin %pin"
+    //% weight=10
+    export function Ultrasonic(pin: DigitalPin): number {
+
+        // send pulse
+        pins.setPull(pin, PinPullMode.PullNone);
+        pins.digitalWritePin(pin, 0);
+        control.waitMicros(2);
+        pins.digitalWritePin(pin, 1);
+        control.waitMicros(10);
+        pins.digitalWritePin(pin, 0);
+
+        // read pulse
+        let d = pins.pulseIn(pin, PulseValue.High, 25000);
+        let ret = d;
+        // filter timeout spikes
+        if (ret == 0 && distanceBuf!= 0){
+            ret = distanceBuf;
+        }
+        distanceBuf = d;
+        return ret*10/6/58;
     }
 
 
