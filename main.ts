@@ -1,328 +1,13 @@
-/**
- * makecode I2C LCD1602 package for microbit.
- * From microbit/micropython Chinese community.
- * http://www.micropython.org.cn
- */
+/*
+Riven
+modified from pxt-servo/servodriver.ts
+load dependency
+"robotbit": "file:../pxt-robotbit"
+*/
 
-enum POINT {
-    O = 0,
-    X = 1,
-} 
-    
-/**
- * Custom blocks
- */
-//% weight=100 color=#0fbc11 icon="L" block="蓝宙天枢扩展模块"
+
+//% color="#31C7D5" weight=10 icon="\uf1d0"
 namespace landzobit {
-    let i2cAddr: number // 0x3F: PCF8574A, 0x27: PCF8574
-    let BK: number      // backlight control
-    let RS: number      // command/data
-
-    let max7219_row1: number = 0;
-    let max7219_row2: number = 0;
-    let max7219_row3: number = 0;
-    let max7219_row4: number = 0;
-    let max7219_row5: number = 0;
-    let max7219_row6: number = 0;
-    let max7219_row7: number = 0;
-    let max7219_row8: number = 0;
-    
-    const BASE_BOARD_I2C_ADDR = 0x30
-    const JOY_BOARD_I2C_ADDR = 0x20
-    
-    export enum Keys {
-        K1 = 0x01,
-        K2 = 0x02,
-        K3 = 0x03,
-        K4 = 0x04,
-        K5 = 0x05,
-        K6 = 0x06,
-        K7 = 0x07,
-        K8 = 0x08,
-        Joystick1_key = 0x09,
-        Joystick2_key = 0x0A,
-        Joystick1_x = 0x0B,
-        Joystick1_y = 0x0C,
-        Joystick2_x = 0x0D,
-        Joystick2_y = 0x0E,
-    }
-    
-    export enum IO_ANALOG_R {
-        P1 = 0xb0,
-        P2 = 0xb1,
-        GP1 = 0xb2,
-        GP2 = 0xb3,
-    }
-    
-    export enum IO_DIGITAL_R {
-        P1 = 0xb0,
-        P2 = 0xb1,
-        P3 = 0xc1,
-        P4 = 0xc2,
-        P5 = 0xc3,
-        P6 = 0xc4,
-        GP1 = 0xb2,
-        GP2 = 0xb3,
-    }
-    
-    export enum IO_DIGITAL_W {
-        P1 = 0xb0,
-        P2 = 0xb1,
-        P3 = 0xc1,
-        P4 = 0xc2,
-        P5 = 0xc3,
-        P6 = 0xc4,
-    }  
-    
-    export enum COLUMN {
-        C1 = 1,
-        C2 = 2,
-        C3 = 3,
-        C4 = 4,
-        C5 = 5,
-        C6 = 6,
-        C7 = 7,
-        C8 = 8,
-    } 
-    
-    export enum ROW {
-        R1 = 1,
-        R2 = 2,
-        R3 = 3,
-        R4 = 4,
-        R5 = 5,
-        R6 = 6,
-        R7 = 7,
-        R8 = 8,
-    } 
-    
-    export enum STATE {
-        SET = 0,
-        RESET = 1,
-    } 
-    
-    function joy_read(cmd: number) :number {
-        let buf = pins.createBuffer(1);
-        buf[0] = cmd;
-        pins.i2cWriteBuffer(JOY_BOARD_I2C_ADDR, buf);
-        return pins.i2cReadNumber(JOY_BOARD_I2C_ADDR, NumberFormat.UInt8BE);
-    }
-    
-    function read_byte() :number {
-        return pins.i2cReadNumber(BASE_BOARD_I2C_ADDR, NumberFormat.UInt8BE);
-    }
-    
-    function read_half_word() :number {
-        return pins.i2cReadNumber(BASE_BOARD_I2C_ADDR, NumberFormat.UInt16BE);
-    }
-    
-    function write_byte0(cmd: number): void {
-        let buf = pins.createBuffer(1);
-        buf[0] = cmd;
-        pins.i2cWriteBuffer(BASE_BOARD_I2C_ADDR, buf)
-    }
-    
-    function write_byte1(cmd: number, dat: number): void {
-        let buf = pins.createBuffer(2);
-        buf[0] = cmd;
-        buf[1] = dat;
-        pins.i2cWriteBuffer(BASE_BOARD_I2C_ADDR, buf)
-    }
-    
-    function write_byte2(cmd: number, dat0: number, dat1: number): void {
-        let buf = pins.createBuffer(3);
-        buf[0] = cmd;
-        buf[1] = dat0;
-        buf[2] = dat1;
-        pins.i2cWriteBuffer(BASE_BOARD_I2C_ADDR, buf)
-    }
-    
-    function write_byte3(cmd: number, dat0: number, dat1: number, dat2: number): void {
-        let buf = pins.createBuffer(4);
-        buf[0] = cmd;
-        buf[1] = dat0;
-        buf[2] = dat1;
-        buf[3] = dat2;
-        pins.i2cWriteBuffer(BASE_BOARD_I2C_ADDR, buf)
-    }
-    
-    //% blockId="MAX7219_show_point" block="点阵屏显示 |行 %r|列 %l|状态 %s|"
-    //% weight=30 blockGap=80
-    export function MAX7219_show_point(row: ROW, column: COLUMN, state: STATE): void {
-        //max7219_set_point(row, column, state)
-        let temp_row: number = 0;
-        
-        switch (row) {
-            case C1: {
-                temp_row = max7219_row1;
-                if (state == 1) {
-                    max7219_row1 |= (1 << (8-column));
-                } else {
-                    max7219_row1 &= ~(1 << (8-column));
-                }
-            }break;
-            case C2: {  
-                temp_row = max7219_row2;
-                if (state == 1) {
-                    max7219_row2 |= (1 << (8-column));
-                } else {
-                    max7219_row2 &= ~(1 << (8-column));
-                }
-            }break;
-            case C3: {
-                temp_row = max7219_row3;
-                if (state == 1) {
-                    max7219_row3 |= (1 << (8-column));
-                } else {
-                    max7219_row3 &= ~(1 << (8-column));
-                }
-            }break;
-            case C4: {
-                temp_row = max7219_row4;
-                if (state == 1) {
-                    max7219_row4 |= (1 << (8-column));
-                } else {
-                    max7219_row4 &= ~(1 << (8-column));
-                }
-            }break;
-            case C5: {
-                temp_row = max7219_row5;
-                if (state == 1) {
-                    max7219_row5 |= (1 << (8-column));
-                } else {
-                    max7219_row5 &= ~(1 << (8-column));
-                }
-            }break
-            case C6: {
-                temp_row = max7219_row6;
-                if (state == 1) {
-                    max7219_row6 |= (1 << (8-column));
-                } else {
-                    max7219_row6 &= ~(1 << (8-column));
-                }
-            }break;
-            case C7: {
-                temp_row = max7219_row7;
-                if (state == 1) {
-                    max7219_row7 |= (1 << (8-column));
-                } else {
-                    max7219_row7 &= ~(1 << (8-column));
-                }
-            }break;
-            case C8: {
-                temp_row = max7219_row8;
-                if (state == 1) {
-                    max7219_row8 |= (1 << (8-column));
-                } else {
-                    max7219_row8 &= ~(1 << (8-column));
-                }
-            }break;
-        }
-        write_byte2(0x72, row, temp_row);
-    }
-
-    //% blockId="RGB" block="RGB灯 |红%r|绿%g|蓝%b"
-    //% weight=90 blockGap=8
-    //% r.min=0 r.max=1
-    //% g.min=0 g.max=1
-    //% b.min=0 b.max=1
-    export function RGB(r: number, g: number, b: number) :void {
-        write_byte3(0x71, r, g, b);
-    }
-    
-    //% blockId="SMG_Off" block="关闭数码管"
-    //% weight=90 blockGap=8
-    export function SMG_Off() :void {
-        write_byte0(0x69);
-    }
-    
-    //% blockId="SMG" block="显示数码管 %r"
-    //% weight=90 blockGap=8
-    export function SMG(num: number) :void {
-        write_byte2(0x70, num&0xff, num>>8);
-    }
-    
-    //% blockId="GPIO_Read_Analog" block="|%io|端口模拟值"
-    //% weight=50
-    export function GPIO_Read_Analog(io: IO_ANALOG_R) :number {
-        write_byte1(0x01, io);
-        return read_half_word();
-    }
-
-    //% blockId="GPIO_Read_Digital" block="|%io|端口数字值"
-    //% weight=50
-    export function GPIO_Read_Digital(io: IO_DIGITAL_R) :number {
-        write_byte1(0x02, io);
-        return read_byte();
-    }    
-
-    //% blockId="GPIO_Write_Digital" block="|%io|端口数字值写入|%d|"
-    //% weight=50
-    export function GPIO_Write_Digital(io: IO_DIGITAL_W, value: number) :void {
-        write_byte2(0x03, 0xb0, value);
-    }
-    
-    //% blockId="DS18B20_read" block="温度传感器数值"
-    //% weight=50
-    export function DS18B20() :number {
-        write_byte0(0x04);
-        return read_half_word();
-    }
-    
-    //% blockId="DHT11_read_temperature" block="温湿度传感器温度数值"
-    //% weight=50
-    export function DHT11_temperature() :number {
-        write_byte0(0x05);
-        let temp = read_half_word();
-        return temp & 0xff;
-    }
-    
-    //% blockId="DHT11_read_humidity" block="温湿度传感器湿度数值"
-    //% weight=50
-    export function DHT11_humidity() :number {
-        write_byte0(0x05);
-        let humi = read_half_word();
-        return humi >> 8;
-    }
-
-    //% blockId="Ultrasonic_read" block="超声波距离值"
-    //% weight=50
-    export function Ultrasonic() :number {
-        write_byte0(0x55);
-        basic.pause(500)
-        return read_byte();
-    }
-    
-    //% blockId="BlackTraker_left" block="红外寻迹1"
-    //% weight=50
-    export function BlackTraker_left() :number {
-        write_byte0(0x52);
-        let left = read_byte();
-        if (left & 0x01) {
-            return 1;
-        }
-        return 0;
-    }
-    
-    //% blockId="BlackTraker_right" block="红外寻迹2"
-    //% weight=50
-    export function BlackTraker_right() :number {
-        write_byte0(0x52);
-        let right = read_byte();
-        if (right & 0x02) {
-            return 1;
-        }
-        return 0;
-    }
-    
-    //% blockId="Key_read" block="读取按键|%key|状态"
-    //% weight=50
-    export function Key_read(key: Keys) :number {
-        return joy_read(key);
-    }
-    
-    
-    
     const PCA9685_ADDRESS = 0x40
     const MODE1 = 0x00
     const MODE2 = 0x01
@@ -339,20 +24,67 @@ namespace landzobit {
     const ALL_LED_OFF_L = 0xFC
     const ALL_LED_OFF_H = 0xFD
 
+    const STP_CHA_L = 2047
+    const STP_CHA_H = 4095
+
+    const STP_CHB_L = 1
+    const STP_CHB_H = 2047
+
+    const STP_CHC_L = 1023
+    const STP_CHC_H = 3071
+
+    const STP_CHD_L = 3071
+    const STP_CHD_H = 1023
+
+    // HT16K33 commands
+    const HT16K33_ADDRESS = 0x70
+    const HT16K33_BLINK_CMD = 0x80
+    const HT16K33_BLINK_DISPLAYON = 0x01
+    const HT16K33_BLINK_OFF = 0
+    const HT16K33_BLINK_2HZ = 1
+    const HT16K33_BLINK_1HZ = 2
+    const HT16K33_BLINK_HALFHZ = 3
+    const HT16K33_CMD_BRIGHTNESS = 0xE0
 
     export enum Servos {
         S1 = 0x01,
         S2 = 0x02,
         S3 = 0x03,
         S4 = 0x04,
+        S5 = 0x05,
+        S6 = 0x06,
+        S7 = 0x07,
+        S8 = 0x08
     }
 
     export enum Motors {
-        M1 = 0x1,
-        M2 = 0x2,
-        M3 = 0x3,
+        M1A = 0x1,
+        M1B = 0x2,
+        M2A = 0x3,
+        M2B = 0x4
     }
 
+    export enum Steppers {
+        M1 = 0x1,
+        M2 = 0x2
+    }
+
+    export enum Turns {
+        //% blockId="T1B4" block="1/4"
+        T1B4 = 90,
+        //% blockId="T1B2" block="1/2"
+        T1B2 = 180,
+        //% blockId="T1B0" block="1"
+        T1B0 = 360,
+        //% blockId="T2B0" block="2"
+        T2B0 = 720,
+        //% blockId="T3B0" block="3"
+        T3B0 = 1080,
+        //% blockId="T4B0" block="4"
+        T4B0 = 1440,
+        //% blockId="T5B0" block="5"
+        T5B0 = 1800
+    }
 
     let initialized = false
     let initializedMatrix = false
@@ -417,9 +149,63 @@ namespace landzobit {
         pins.i2cWriteBuffer(PCA9685_ADDRESS, buf);
     }
 
+
+    function setStepper(index: number, dir: boolean): void {
+        if (index == 1) {
+            if (dir) {
+                setPwm(0, STP_CHA_L, STP_CHA_H);
+                setPwm(2, STP_CHB_L, STP_CHB_H);
+                setPwm(1, STP_CHC_L, STP_CHC_H);
+                setPwm(3, STP_CHD_L, STP_CHD_H);
+            } else {
+                setPwm(3, STP_CHA_L, STP_CHA_H);
+                setPwm(1, STP_CHB_L, STP_CHB_H);
+                setPwm(2, STP_CHC_L, STP_CHC_H);
+                setPwm(0, STP_CHD_L, STP_CHD_H);
+            }
+        } else {
+            if (dir) {
+                setPwm(4, STP_CHA_L, STP_CHA_H);
+                setPwm(6, STP_CHB_L, STP_CHB_H);
+                setPwm(5, STP_CHC_L, STP_CHC_H);
+                setPwm(7, STP_CHD_L, STP_CHD_H);
+            } else {
+                setPwm(7, STP_CHA_L, STP_CHA_H);
+                setPwm(5, STP_CHB_L, STP_CHB_H);
+                setPwm(6, STP_CHC_L, STP_CHC_H);
+                setPwm(4, STP_CHD_L, STP_CHD_H);
+            }
+        }
+    }
+
     function stopMotor(index: number) {
         setPwm((index - 1) * 2, 0, 0);
         setPwm((index - 1) * 2 + 1, 0, 0);
+    }
+
+    function matrixInit() {
+        i2ccmd(HT16K33_ADDRESS, 0x21);// turn on oscillator
+        i2ccmd(HT16K33_ADDRESS, HT16K33_BLINK_CMD | HT16K33_BLINK_DISPLAYON | (0 << 1));
+        i2ccmd(HT16K33_ADDRESS, HT16K33_CMD_BRIGHTNESS | 0xF);
+    }
+
+    function matrixShow() {
+        matBuf[0] = 0x00;
+        pins.i2cWriteBuffer(HT16K33_ADDRESS, matBuf);
+    }
+
+
+    /**
+     * Init RGB pixels mounted on robotbit
+     */
+    //% blockId="robotbit_rgb" block="RGB"
+    //% weight=5
+    export function rgb(): neopixel.Strip {
+        if (!neoStrip) {
+            neoStrip = neopixel.create(DigitalPin.P16, 4, NeoPixelMode.RGB)
+        }
+
+        return neoStrip;
     }
 
     /**
@@ -439,6 +225,108 @@ namespace landzobit {
         let v_us = (degree * 1800 / 180 + 600) // 0.6 ~ 2.4
         let value = v_us * 4096 / 20000
         setPwm(index + 7, 0, value)
+    }
+
+    /**
+     * Geek Servo
+     * @param index Servo Channel; eg: S1
+     * @param degree [-45-225] degree of servo; eg: -45, 90, 225
+    */
+    //% blockId=robotbit_gservo block="Geek Servo|%index|degree %degree"
+    //% weight=99
+    //% blockGap=50
+    //% degree.min=-45 degree.max=225
+    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
+    export function GeekServo(index: Servos, degree: number): void {
+        if (!initialized) {
+            initPCA9685()
+        }
+        // 50hz: 20,000 us
+        let v_us = ((degree -90) * 20 / 3 + 1500) // 0.6 ~ 2.4
+        let value = v_us * 4096 / 20000
+        setPwm(index + 7, 0, value)
+    }
+    
+    //% blockId=robotbit_stepper_degree block="Stepper 28BYJ-48|%index|degree %degree"
+    //% weight=90
+    export function StepperDegree(index: Steppers, degree: number): void {
+        if (!initialized) {
+            initPCA9685()
+        }
+        setStepper(index, degree > 0);
+        degree = Math.abs(degree);
+        basic.pause(10240 * degree / 360);
+        MotorStopAll()
+    }
+
+
+    //% blockId=robotbit_stepper_turn block="Stepper 28BYJ-48|%index|turn %turn"
+    //% weight=90
+    export function StepperTurn(index: Steppers, turn: Turns): void {
+        let degree = turn;
+        StepperDegree(index, degree);
+    }
+
+    //% blockId=robotbit_stepper_dual block="Dual Stepper(Degree) |M1 %degree1| M2 %degree2"
+    //% weight=89
+    export function StepperDual(degree1: number, degree2: number): void {
+        if (!initialized) {
+            initPCA9685()
+        }
+        setStepper(1, degree1 > 0);
+        setStepper(2, degree2 > 0);
+        degree1 = Math.abs(degree1);
+        degree2 = Math.abs(degree2);
+        basic.pause(10240 * Math.min(degree1, degree2) / 360);
+        if (degree1 > degree2) {
+            stopMotor(3); stopMotor(4);
+            basic.pause(10240 * (degree1 - degree2) / 360);
+        } else {
+            stopMotor(1); stopMotor(2);
+            basic.pause(10240 * (degree2 - degree1) / 360);
+        }
+
+        MotorStopAll()
+    }
+
+    /**
+     * Stepper Car move forward
+     * @param distance Distance to move in cm; eg: 10, 20
+     * @param diameter diameter of wheel in mm; eg: 48
+    */
+    //% blockId=robotbit_stpcar_move block="Car Forward|Diameter(cm) %distance|Wheel Diameter(mm) %diameter"
+    //% weight=88
+    export function StpCarMove(distance: number, diameter: number): void {
+        if (!initialized) {
+            initPCA9685()
+        }
+        let delay = 10240 * 10 * distance / 3 / diameter; // use 3 instead of pi
+        setStepper(1, delay > 0);
+        setStepper(2, delay > 0);
+        delay = Math.abs(delay);
+        basic.pause(delay);
+        MotorStopAll()	
+    }
+
+    /**
+     * Stepper Car turn by degree
+     * @param turn Degree to turn; eg: 90, 180, 360
+     * @param diameter diameter of wheel in mm; eg: 48
+     * @param track track width of car; eg: 125
+    */
+    //% blockId=robotbit_stpcar_turn block="Car Turn|Degree %turn|Wheel Diameter(mm) %diameter|Track(mm) %track"
+    //% weight=87
+    //% blockGap=50
+    export function StpCarTurn(turn: number, diameter: number, track: number): void {
+        if (!initialized) {
+            initPCA9685()
+        }
+        let delay = 10240 * turn * track / 360 / diameter;
+        setStepper(1, delay < 0);
+        setStepper(2, delay > 0);
+        delay = Math.abs(delay);
+        basic.pause(delay);
+        MotorStopAll()
     }
 
     //% blockId=robotbit_motor_run block="Motor|%index|speed %speed"
@@ -519,4 +407,70 @@ namespace landzobit {
             stopMotor(idx);
         }
     }
+
+    //% blockId=robotbit_matrix_draw block="Matrix Draw|X %x|Y %y"
+    //% weight=69
+    export function MatrixDraw(x: number, y: number): void {
+        if (!initializedMatrix) {
+            matrixInit();
+            initializedMatrix = true;
+        }
+        let idx = y * 2 + x / 8;
+        matBuf[idx + 1] |= (1 << (x % 8));
+        matrixShow();
+    }
+
+	/*
+    //% blockId=robotbit_matrix_clean block="Matrix Clean|X %x|Y %y"
+    //% weight=68
+    export function MatrixClean(x: number, y: number): void {
+        if (!initializedMatrix) {
+            matrixInit();
+            initializedMatrix = true;
+        }
+        let idx = y * 2 + x / 8;
+		// todo: bitwise not throw err 
+        matBuf[idx + 1] &=~(1 << (x % 8));
+        matrixShow();
+    }
+	*/
+
+    //% blockId=robotbit_matrix_clear block="Matrix Clear"
+    //% weight=65
+    //% blockGap=50
+    export function MatrixClear(): void {
+        if (!initializedMatrix) {
+            matrixInit();
+            initializedMatrix = true;
+        }
+        for (let i = 0; i < 16; i++) {
+            matBuf[i + 1] = 0;
+        }
+        matrixShow();
+    }
+
+    //% blockId=robotbit_ultrasonic block="Ultrasonic|pin %pin"
+    //% weight=10
+    export function Ultrasonic(pin: DigitalPin): number {
+
+        // send pulse
+        pins.setPull(pin, PinPullMode.PullNone);
+        pins.digitalWritePin(pin, 0);
+        control.waitMicros(2);
+        pins.digitalWritePin(pin, 1);
+        control.waitMicros(10);
+        pins.digitalWritePin(pin, 0);
+
+        // read pulse
+        let d = pins.pulseIn(pin, PulseValue.High, 25000);
+        let ret = d;
+        // filter timeout spikes
+        if (ret == 0 && distanceBuf!= 0){
+            ret = distanceBuf;
+        }
+        distanceBuf = d;
+        return ret*10/6/58;
+    }
+
+
 }
