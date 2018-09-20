@@ -1,8 +1,6 @@
 /*
 Riven
-modified from pxt-servo/servodriver.ts
-load dependency
-"robotbit": "file:../pxt-robotbit"
+modified from robotbit
 */
 
 

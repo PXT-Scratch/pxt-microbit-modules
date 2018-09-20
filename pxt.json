@@ -1,16 +1,16 @@
 {
-    "name": "landzobit",
-    "version": "0.0.5",
-    "description": "makecode Landzo Tianshu motor package for micro:bit",
+    "name": "robotbit",
+    "version": "0.2.4",
+    "description": "Extension for Kittenbot Robotbit",
     "license": "MIT",
     "dependencies": {
         "core": "*",
-        "neopixel": "github:microsoft/pxt-neopixel#v0.6.2",
+        "neopixel": "github:microsoft/pxt-neopixel#v0.6.2"
     },
     "files": [
         "README.md",
         "main.ts",
-        "_locales/zh/landzobit-strings.json",
+        "_locales/zh/robotbit-strings.json"
     ],
     "testFiles": [
         "test.ts"
