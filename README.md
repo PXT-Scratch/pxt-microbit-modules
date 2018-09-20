@@ -1,4 +1,4 @@
-# i2cLCD1602
+# landzobit
 
 makecode I2C LCD1602 package for micro:bit  
 
