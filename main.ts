@@ -12,8 +12,8 @@ enum POINT {
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon="L" block="天枢扩展模块"
-namespace LANDZO_TS {
+//% weight=100 color=#0fbc11 icon="L" block="蓝宙天枢扩展模块"
+namespace landzobit {
     let i2cAddr: number // 0x3F: PCF8574A, 0x27: PCF8574
     let BK: number      // backlight control
     let RS: number      // command/data
@@ -220,43 +220,7 @@ namespace LANDZO_TS {
         }
         write_byte2(0x72, row, temp_row);
     }
-    /*
-    //% blockId="MAX7219_show_line" block="点阵屏显示行 |%l|%pnt1|%pnt2|%pnt3|%pnt4|%pnt5|%pnt6|%pnt7|%pnt8|"
-    //% weight=30 blockGap=80
-    export function MAX7219_show_line(line: ROW, pnt1: POINT,pnt2: POINT,pnt3: POINT,pnt4: POINT,pnt5: POINT,pnt6: POINT,pnt7: POINT,pnt8: POINT): void {
-        let point = pnt1<<7 + pnt2<<6 + pnt3<<5 + pnt4<<4 + pnt5<<3 + pnt6<<2 + pnt7<<1 + pnt8;
-        write_byte2(0x72, line, point);
-    }
-    */
-    /*
-    //% blockId="MAX7219_show_line" block="点阵屏显示行 l %l|n %n" icon="\uf00a"
-    //% weight=90 blockGap=8
-    export function MAX7219_show_line(line: number, point: number): void {
-        write_byte2(0x72, line, point);
-    }
-    */
-    /*
-    //% blockId="MAX7219_show" block="点阵屏显示多行 l1 %l1|l2 %l2|l3 %l3|l4 %l4|l5 %l5|l6 %l6|l7 %l7|l8 %l8" icon="\uf00a"
-    //% weight=200 blockGap=8
-    export function MAX7219_show(line1_dat: number, line2_dat: number, line3_dat: number, line4_dat: number, line5_dat: number, line6_dat: number, line7_dat: number, line8_dat: number): void {
-        write_byte2(0x72, 1, line1_dat);
-        basic.pause(1);
-        write_byte2(0x72, 2, line2_dat);
-        basic.pause(1);
-        write_byte2(0x72, 3, line3_dat);
-        basic.pause(1);
-        write_byte2(0x72, 4, line4_dat);
-        basic.pause(1);
-        write_byte2(0x72, 5, line5_dat);
-        basic.pause(1);
-        write_byte2(0x72, 6, line6_dat);
-        basic.pause(1);
-        write_byte2(0x72, 7, line7_dat);
-        basic.pause(1);
-        write_byte2(0x72, 8, line8_dat);
-        basic.pause(1);
-    }
-    */
+
     //% blockId="RGB" block="RGB灯 |红%r|绿%g|蓝%b"
     //% weight=90 blockGap=8
     //% r.min=0 r.max=1
@@ -297,130 +261,6 @@ namespace LANDZO_TS {
     export function GPIO_Write_Digital(io: IO_DIGITAL_W, value: number) :void {
         write_byte2(0x03, 0xb0, value);
     }
-    
-    /*
-    //% blockId="General_IO1_Read_Analog" block="通用IO1读取模拟值"
-    //% weight=50
-    export function General_IO1_Read_Analog() :number {
-        write_byte1(0x01, 0xb2);
-        return read_half_word();
-    }
-    
-    //% blockId="General_IO1_Read_Digital" block="通用IO1读取数字值"
-    //% weight=50
-    export function General_IO1_Read_Digital() :number {
-        write_byte1(0x02, 0xb2);
-        return read_byte();
-    }
-    
-    //% blockId="General_IO2_Read_Analog" block="通用IO2读取模拟值"
-    //% weight=50
-    export function General_IO2_Read_Analog() :number {
-        write_byte1(0x01, 0xb3);
-        return read_half_word();
-    }
-    
-    //% blockId="General_IO2_Read_Digital" block="通用IO2读取数字值"
-    //% weight=50
-    export function General_IO2_Read_Digital() :number {
-        write_byte1(0x02, 0xb3);
-        return read_byte();
-    }
-    
-    //% blockId="P1_Read_Analog" block="P1读取模拟值"
-    //% weight=50
-    export function P1_Read_Analog() :number {
-        write_byte1(0x01, 0xb0);
-        return read_half_word();
-    }
-    
-    //% blockId="P1_Read_Digital" block="P1读取数字值"
-    //% weight=50
-    export function P1_Read_Digital() :number {
-        write_byte1(0x02, 0xb0);
-        return read_byte();
-    }
-    
-    //% blockId="P1_Write_Digital" block="P1数字值写 d %d"
-    //% weight=50
-    export function P1_Write_Digital(value: number) :void {
-        write_byte2(0x03, 0xb0, value);
-    }
-    
-    //% blockId="P2_Read_Analog" block="P2读取模拟值"
-    //% weight=50
-    export function P2_Read_Analog() :number {
-        write_byte1(0x01, 0xb1);
-        return read_half_word();
-    }
-    
-    //% blockId="P2_Read_Digital" block="P2读取数字值"
-    //% weight=50
-    export function P2_Read_Digital() :number {
-        write_byte1(0x02, 0xb1);
-        return read_byte();
-    }
-    
-    //% blockId="P2_Write_Digital" block="P2数字值写 d %d"
-    //% weight=50
-    export function P2_Write_Digital(value: number) :void {
-        write_byte2(0x03, 0xb1, value);
-    }
-    
-    //% blockId="P3_Read_Digital" block="P3读取数字值"
-    //% weight=50
-    export function P3_Read_Digital() :number {
-        write_byte1(0x02, 0xc1);
-        return read_byte();
-    }
-    
-    //% blockId="P3_Write_Digital" block="P3数字值写 d %d"
-    //% weight=50
-    export function P3_Write_Digital(value: number) :void {
-        write_byte2(0x03, 0xc1, value);
-    }
-    
-    //% blockId="P4_Read_Digital" block="P4读取数字值"
-    //% weight=50
-    export function P4_Read_Digital() :number {
-        write_byte1(0x02, 0xc2);
-        return read_byte();
-    }
-    
-    //% blockId="P4_Write_Digital" block="P4数字值写 d %d"
-    //% weight=50
-    export function P4_Write_Digital(value: number) :void {
-        write_byte2(0x03, 0xc2, value);
-    }
-    
-    //% blockId="P5_Read_Digital" block="P5读取数字值"
-    //% weight=50
-    export function P5_Read_Digital() :number {
-        write_byte1(0x02, 0xc3);
-        return read_byte();
-    }
-    
-    //% blockId="P5_Write_Digital" block="P5数字值写 d %d"
-    //% weight=50
-    export function P5_Write_Digital(value: number) :void {
-        write_byte2(0x03, 0xc3, value);
-    }
-    
-    //% blockId="P6_Read_Digital" block="P6读取数字值"
-    //% weight=50
-    export function P6_Read_Digital() :number {
-        write_byte1(0x02, 0xc4);
-        return read_byte();
-    }
-    
-    //% blockId="P6_Write_Digital" block="P6数字值写 d %d"
-    //% weight=50
-    export function P6_Write_Digital(value: number) :void {
-        write_byte2(0x03, 0xc4, value);
-    }
-    */
-    
-    
     
     //% blockId="DS18B20_read" block="温度传感器数值"
     //% weight=50

@@ -1,5 +1,5 @@
 {
-    "name": "landzobit-motor",
+    "name": "landzobit",
     "version": "0.0.5",
     "description": "makecode Landzo Tianshu motor package for micro:bit",
     "license": "MIT",
@@ -10,7 +10,7 @@
     "files": [
         "README.md",
         "main.ts",
-        "_locales/zh/landzo-strings.json",
+        "_locales/zh/landzobit-strings.json",
     ],
     "testFiles": [
         "test.ts"
