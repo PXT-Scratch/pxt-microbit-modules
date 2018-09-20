@@ -1,7 +1,7 @@
 {
-    "name": "LandzoTianshu",
+    "name": "landzobit-motor",
     "version": "0.0.5",
-    "description": "makecode Landzo Tianshu package for micro:bit",
+    "description": "makecode Landzo Tianshu motor package for micro:bit",
     "license": "MIT",
     "dependencies": {
         "core": "*",
