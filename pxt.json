@@ -1,6 +1,6 @@
 {
     "name": "landzobit",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Extension for landzobit tianshu motor",
     "license": "MIT",
     "dependencies": {
