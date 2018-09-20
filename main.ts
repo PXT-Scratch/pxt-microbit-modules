@@ -582,7 +582,7 @@ namespace LANDZO_TS {
     }
 
 
-    //% blockId=landzobit_servo block="Servo|%index|degree %degree"
+    //% blockId=landzobit_servo block="舵机|%index|角度 %degree"
     //% weight=100
     //% degree.min=0 degree.max=180
     export function Servo(index: Servos, degree: number): void {
@@ -595,7 +595,7 @@ namespace LANDZO_TS {
         setPwm(index + 7, 0, value)
     }
 
-    //% blockId=landzobit_motor_run block="Motor|%index|speed %speed"
+    //% blockId=landzobit_motor_run block="电机|%index|速度 %speed"
     //% weight=85
     //% speed.min=-255 speed.max=255
     export function MotorRun(index: Motors, speed: number): void {
@@ -623,7 +623,7 @@ namespace LANDZO_TS {
     }
 
 
-    //% blockId=landzobit_motor_dual block="Motor|%motor1|speed %speed1|%motor2|speed %speed2"
+    //% blockId=landzobit_motor_dual block="电机|%motor1|速度 %speed1|%motor2|速度 %speed2"
     //% weight=84
     //% speed1.min=-255 speed1.max=255
     //% speed2.min=-255 speed2.max=255
@@ -632,7 +632,7 @@ namespace LANDZO_TS {
         MotorRun(motor2, speed2);
     }
 
-    //% blockId=landzobit_motor_rundelay block="Motor|%index|speed %speed|delay %delay|s"
+    //% blockId=landzobit_motor_rundelay block="电机|%index|速度 %speed|延时 %delay|s"
     //% weight=81
     //% speed.min=-255 speed.max=255
     export function MotorRunDelay(index: Motors, speed: number, delay: number): void {
@@ -643,13 +643,13 @@ namespace LANDZO_TS {
 
 
 
-    //% blockId=landzobit_stop block="Motor Stop|%index|"
+    //% blockId=landzobit_stop block="电机停止|%index|"
     //% weight=80
     export function MotorStop(index: Motors): void {
         MotorRun(index, 0);
     }
 
-    //% blockId=landzobit_stop_all block="Motor Stop All"
+    //% blockId=landzobit_stop_all block="停止所有电机"
     //% weight=79
     //% blockGap=50
     export function MotorStopAll(): void {
