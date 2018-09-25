@@ -294,8 +294,8 @@ namespace LANDZO_TS {
 
     //% blockId="GPIO_Write_Digital" block="|%io|端口数字值写入|%d|"
     //% weight=50
-    export function GPIO_Write_Digital(io: IO_DIGITAL_W, value: number) :void {
-        write_byte2(0x03, 0xb0, value);
+    export function GPIO_Write_Digital(io: IO_DIGITAL_W, d: number) :void {
+        write_byte2(0x03, io, d);
     }
     
     /*
