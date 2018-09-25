@@ -105,7 +105,7 @@ namespace LANDZO_TS {
         let buf = pins.createBuffer(1);
         buf[0] = cmd;
         pins.i2cWriteBuffer(JOY_BOARD_I2C_ADDR, buf);
-        return pins.i2cReadNumber(JOY_BOARD_I2C_ADDR, NumberFormat.UInt8BE);
+        return pins.i2cReadNumber(JOY_BOARD_I2C_ADDR, NumberFormat.UInt16BE);
     }
     
     function read_byte() :number {
@@ -220,6 +220,36 @@ namespace LANDZO_TS {
         }
         write_byte2(0x72, row, temp_row);
     }
+    
+    //% blockId="MAX7219_show_line" block="点阵屏显示行 l %l|n %n" icon="\uf00a"
+    //% weight=90 blockGap=8
+    export function MAX7219_clean(line: number, point: number): void {
+        max7219_row1 = 0;
+        max7219_row2 = 0;
+        max7219_row3 = 0;
+        max7219_row4 = 0;
+        max7219_row5 = 0;
+        max7219_row6 = 0;
+        max7219_row7 = 0;
+        max7219_row8 = 0;
+        write_byte2(0x72, 1, max7219_row1);
+        basic.pause(100);
+        write_byte2(0x72, 2, max7219_row2);
+        basic.pause(100);
+        write_byte2(0x72, 3, max7219_row3);
+        basic.pause(100);
+        write_byte2(0x72, 4, max7219_row4);
+        basic.pause(100);
+        write_byte2(0x72, 5, max7219_row5);
+        basic.pause(100);
+        write_byte2(0x72, 6, max7219_row6);
+        basic.pause(100);
+        write_byte2(0x72, 7, max7219_row7);
+        basic.pause(100);
+        write_byte2(0x72, 8, max7219_row8);
+        basic.pause(100);
+    }
+    
     /*
     //% blockId="MAX7219_show_line" block="点阵屏显示行 |%l|%pnt1|%pnt2|%pnt3|%pnt4|%pnt5|%pnt6|%pnt7|%pnt8|"
     //% weight=30 blockGap=80
