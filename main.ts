@@ -97,8 +97,8 @@ namespace LANDZO_TS {
     } 
     
     export enum STATE {
-        SET = 0,
-        RESET = 1,
+        RESET = 0,
+        SET = 1,
     } 
     
     function joy_read(cmd: number) :number {
