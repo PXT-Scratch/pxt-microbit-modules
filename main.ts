@@ -153,7 +153,7 @@ namespace LANDZO_TS {
         let temp_row: number = 0;
         
         switch (row) {
-            case C1: {
+            case 1: {
                 temp_row = max7219_row1;
                 if (state == 1) {
                     max7219_row1 |= (1 << (8-column));
@@ -161,7 +161,7 @@ namespace LANDZO_TS {
                     max7219_row1 &= ~(1 << (8-column));
                 }
             }break;
-            case C2: {  
+            case 2: {  
                 temp_row = max7219_row2;
                 if (state == 1) {
                     max7219_row2 |= (1 << (8-column));
@@ -169,7 +169,7 @@ namespace LANDZO_TS {
                     max7219_row2 &= ~(1 << (8-column));
                 }
             }break;
-            case C3: {
+            case 3: {
                 temp_row = max7219_row3;
                 if (state == 1) {
                     max7219_row3 |= (1 << (8-column));
@@ -177,7 +177,7 @@ namespace LANDZO_TS {
                     max7219_row3 &= ~(1 << (8-column));
                 }
             }break;
-            case C4: {
+            case 4: {
                 temp_row = max7219_row4;
                 if (state == 1) {
                     max7219_row4 |= (1 << (8-column));
@@ -185,7 +185,7 @@ namespace LANDZO_TS {
                     max7219_row4 &= ~(1 << (8-column));
                 }
             }break;
-            case C5: {
+            case 5: {
                 temp_row = max7219_row5;
                 if (state == 1) {
                     max7219_row5 |= (1 << (8-column));
@@ -193,7 +193,7 @@ namespace LANDZO_TS {
                     max7219_row5 &= ~(1 << (8-column));
                 }
             }break
-            case C6: {
+            case 6: {
                 temp_row = max7219_row6;
                 if (state == 1) {
                     max7219_row6 |= (1 << (8-column));
@@ -201,7 +201,7 @@ namespace LANDZO_TS {
                     max7219_row6 &= ~(1 << (8-column));
                 }
             }break;
-            case C7: {
+            case 7: {
                 temp_row = max7219_row7;
                 if (state == 1) {
                     max7219_row7 |= (1 << (8-column));
@@ -209,7 +209,7 @@ namespace LANDZO_TS {
                     max7219_row7 &= ~(1 << (8-column));
                 }
             }break;
-            case C8: {
+            case 8: {
                 temp_row = max7219_row8;
                 if (state == 1) {
                     max7219_row8 |= (1 << (8-column));
