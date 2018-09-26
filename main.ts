@@ -302,7 +302,7 @@ namespace LANDZO_TS {
         write_byte0(0x69);
     }
     
-    //% blockId="SMG" block="显示数码管 %r"
+    //% blockId="SMG" block="数码管显示 %r"
     //% weight=90 blockGap=8
     export function SMG(num: number) :void {
         write_byte2(0x70, num&0xff, num>>8);
@@ -456,7 +456,7 @@ namespace LANDZO_TS {
     //% weight=50
     export function DS18B20() :number {
         write_byte0(0x04);
-        return read_half_word();
+        return read_half_word()/10;
     }
     
     //% blockId="DHT11_read_temperature" block="温湿度传感器温度数值"
