@@ -8,7 +8,34 @@ enum POINT {
     O = 0,
     X = 1,
 } 
-    
+
+enum Proto {
+	DIO = 0,
+	AIO,
+	DAIO,
+	CHAOSHENGBO,
+	RGB,
+	HONGWAIXUNJI,
+	SMG_DZP,
+	DS18B20,
+	DHT11,
+	
+	DUOJI,
+	BUJINDIANJI,
+	DIANJI,
+	
+	BOARD_STATE = 0xa1,
+}
+	
+enum DZP_SMG_MODE {
+	DZP_SMG_0 = 0x00,
+	DZP_SMG_1 = 0x80,
+	DZP_MODE = 0x00,
+	SMG_MODE = 0x40,
+	
+	DZP_SMG_INIT = 0x20,
+}
+	
 /**
  * Custom blocks
  */
@@ -55,7 +82,7 @@ namespace LANDZO_TS {
 	let proto_dht11_temp: number = 0;
 	let proto_dht11_humi: number = 0;
 	
-	
+	const UCP_HEAD = 0xa1
 	
     // const BASE_BOARD_I2C_ADDR = 0x30
     // const JOY_BOARD_I2C_ADDR = 0x20
@@ -95,16 +122,7 @@ namespace LANDZO_TS {
         P5 = 0x03,
         P6 = 0x04,
     }  
-    
-	export enum DZP_SMG_MODE {
-		DZP_SMG_0 = 0x00,
-		DZP_SMG_1 = 0x80,
-		DZP_MODE = 0x00,
-        SMG_MODE = 0x40,
-		
-		DZP_SMG_INIT = 0x20,
-    }
-	
+
 	export enum LETTER {
 		Num0 = 0,
         Num1 = 1,
@@ -159,28 +177,11 @@ namespace LANDZO_TS {
     }
 
     export enum Motors {
-        M1 = 0x1,
-        M2 = 0x2,
-        M3 = 0x3,
+        M1 = 0x80,
+        M2 = 0x40,
+        M3 = 0x20,
     }
-	
-	export enum Proto {
-        DIO = 0,
-		AIO,
-		DAIO,
-		CHAOSHENGBO,
-		RGB,
-		HONGWAIXUNJI,
-		SMG_DZP,
-		DS18B20,
-		DHT11,
-		
-		DUOJI,
-		BUJINDIANJI,
-		DIANJI,
-		
-		BOARD_STATE = 0xa1,
-    }
+
 
 	function write_proto(addr: number, cmd: number, len: number, dat0: number, dat1: number, dat2: number, dat3: number): void {
         let buf = pins.createBuffer(8);
@@ -273,7 +274,7 @@ namespace LANDZO_TS {
 			case 3: {
 				proto_length = data;
 				if (proto_length == 0) {
-					proto_deal(proto_addr, proto_cmd, 0, 0)
+					proto_deal(proto_addr, proto_cmd, proto_datas, 0)
 					proto_state = 0;
 				} else {
 					proto_state = 4;
@@ -326,7 +327,7 @@ namespace LANDZO_TS {
     //% g.min=0 g.max=1
     //% b.min=0 b.max=1
     export function RGB(r: number, g: number, b: number) :void {
-        write_2_sensor(RGB, 3, r, g, b);
+        write_2_sensor(RGB, 3, r, g, b, 0);
     }
     
     //% blockId="SMG_Off" block="关闭数码管"
@@ -425,17 +426,43 @@ namespace LANDZO_TS {
     //% weight=85
     //% speed.min=-255 speed.max=255
     export function MotorRun(index: Motors, speed: number): void {
-        write_2_motor(DIANJI, 2, index, speed, 0, 0);
+		
+		if (index == M1) {
+			if (speed < 0) {
+				index = index | 0x08;
+			}
+			write_2_motor(DIANJI, 2, index, speed, 0, 0);
+		} else
+        if (index == M2) {
+			if (speed < 0) {
+				index = index | 0x04;
+			}
+			write_2_motor(DIANJI, 2, index, 0, speed, 0);
+		} else
+		if (index == M3) {
+			if (speed < 0) {
+				index = index | 0x02;
+			}
+			write_2_motor(DIANJI, 2, index, 0, 0, speed);
+		}
     }
 
 
-    //% blockId=landzobit_motor_dual block="电机|%motor1|速度 %speed1|%motor2|速度 %speed2"
+    //% blockId=landzobit_motor_dual block="电机1速度 %speed1 电机2速度 %speed2"
     //% weight=84
     //% speed1.min=-255 speed1.max=255
     //% speed2.min=-255 speed2.max=255
-    export function MotorRunDual(motor1: Motors, speed1: number, motor2: Motors, speed2: number): void {
-        MotorRun(motor1, speed1);
-        MotorRun(motor2, speed2);
+    export function MotorRunDual(speed1: number, speed2: number): void {
+		let index = M1 | M2;
+        if (speed1 < 0) {
+			index = index | 0x08;
+		}
+		write_2_motor(DIANJI, 2, index, speed1, 0, 0);
+
+		if (speed2 < 0) {
+			index = index | 0x04;
+		}
+		write_2_motor(DIANJI, 2, index, 0, speed2, 0);
     }
 
     //% blockId=landzobit_motor_rundelay block="电机|%index|速度 %speed|延时 %delay|s"
@@ -457,9 +484,7 @@ namespace LANDZO_TS {
     //% weight=79
     //% blockGap=50
     export function MotorStopAll(): void {
-        for (let idx = 1; idx <= 4; idx++) {
-            stopMotor(idx);
-        }
+        write_2_motor(DIANJI, 2, M1 | M2 | M3, 0, 0, 0);
     }
      
 }
