@@ -8,33 +8,6 @@ enum POINT {
     O = 0,
     X = 1,
 } 
-
-enum Proto {
-	DIO = 0,
-	AIO,
-	DAIO,
-	CHAOSHENGBO,
-	RGB,
-	HONGWAIXUNJI,
-	SMG_DZP,
-	DS18B20,
-	DHT11,
-	
-	DUOJI,
-	BUJINDIANJI,
-	DIANJI,
-	
-	BOARD_STATE = 0xa1,
-}
-	
-enum DZP_SMG_MODE {
-	DZP_SMG_0 = 0x00,
-	DZP_SMG_1 = 0x80,
-	DZP_MODE = 0x00,
-	SMG_MODE = 0x40,
-	
-	DZP_SMG_INIT = 0x20,
-}
 	
 /**
  * Custom blocks
@@ -83,6 +56,38 @@ namespace LANDZO_TS {
 	let proto_dht11_humi: number = 0;
 	
 	const UCP_HEAD = 0xa1
+	
+	const DIO = 0;
+	const AIO = 1;
+	const DAIO = 2;
+	const CHAOSHENGBO = 3;
+	const RGB = 4;
+	const HONGWAIXUNJI = 5;
+	const SMG_DZP = 6;
+	const DS18B20 = 7;
+	const DHT11 = 8;
+	const DUOJI = 9;
+	const BUJINDIANJI = 10;
+	const DIANJI = 11;
+	
+	const DZP_SMG_0 = 0x00;
+	const DZP_SMG_1 = 0x80;
+	const DZP_MODE = 0x00;
+	const SMG_MODE = 0x40;
+	const DZP_SMG_INIT = 0x20;
+	
+	const P1 = 0xb0;
+	const P2 = 0xb1;
+	const P3 = 0xc1;
+	const P4 = 0xc2;
+	const P5 = 0xc3;
+	const P6 = 0xc4;
+	const GP1 = 0xb2;
+	const GP2 = 0xb3;
+	
+	const M1 = 0x80;
+    const M2 = 0x40;
+    const M3 = 0x20;
 	
     // const BASE_BOARD_I2C_ADDR = 0x30
     // const JOY_BOARD_I2C_ADDR = 0x20
@@ -321,12 +326,12 @@ namespace LANDZO_TS {
 		write_2_sensor(SMG_DZP, 3, DZP_MODE, where, what&0xff, 0);
 	}
 	
-    //% blockId="RGB" block="RGB灯 |红%r|绿%g|蓝%b"
+    //% blockId="RGB_set" block="RGB灯 |红%r|绿%g|蓝%b"
     //% weight=90 blockGap=8
     //% r.min=0 r.max=1
     //% g.min=0 g.max=1
     //% b.min=0 b.max=1
-    export function RGB(r: number, g: number, b: number) :void {
+    export function RGB_set(r: number, g: number, b: number) :void {
         write_2_sensor(RGB, 3, r, g, b, 0);
     }
     
@@ -336,9 +341,9 @@ namespace LANDZO_TS {
         write_2_sensor(SMG_DZP, 3, SMG_MODE, 0, 0, 0);
     }
     
-    //% blockId="SMG" block="数码管显示 %r"
+    //% blockId="SMG_set" block="数码管显示 %r"
     //% weight=90 blockGap=8
-    export function SMG(num: number) :void {
+    export function SMG_set(num: number) :void {
         write_2_sensor(SMG_DZP, 3, SMG_MODE, num&0xff, num>>8, 0);
     }
 	
@@ -346,14 +351,15 @@ namespace LANDZO_TS {
     //% weight=50
     export function GPIO_Read_Analog(io: IO_ANALOG_R) :number {
         if (io == P1) {
-			return proto_aio0;
-		} else if (io == P2) {
 			return proto_aio1;
+		} else if (io == P2) {
+			return proto_aio2;
 		} else if (io == GP1) {
 			return proto_gaio1;
 		} else if (io == GP2) {
 			return proto_gaio2;
 		}
+		return proto_aio1;
     }
 
     //% blockId="GPIO_Read_Digital" block="|%io|端口数字值"
@@ -369,31 +375,32 @@ namespace LANDZO_TS {
 			case GP1: return proto_gdio1;
 			case GP2: return proto_gdio2;
 		}
+		return proto_dio1;
     }    
 
     //% blockId="GPIO_Write_Digital" block="|%io|端口数字值写入|%d|"
     //% weight=50
     export function GPIO_Write_Digital(io: IO_DIGITAL_W, d: number) :void {
-        write_2_sensor(DIO, 2, io, d);
+        write_2_sensor(DIO, 2, io, d, 0, 0);
     }
     
     
     //% blockId="DS18B20_read" block="温度传感器数值"
     //% weight=50
     export function DS18B20() :number {
-        
+        return 0;
     }
     
     //% blockId="DHT11_read_temperature" block="温湿度传感器温度数值"
     //% weight=50
     export function DHT11_temperature() :number {
-        
+        return 0;
     }
     
     //% blockId="DHT11_read_humidity" block="温湿度传感器湿度数值"
     //% weight=50
     export function DHT11_humidity() :number {
-        
+        return 0;
     }
 
     //% blockId="Ultrasonic_read" block="超声波距离值"
