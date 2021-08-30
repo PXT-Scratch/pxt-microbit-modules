@@ -387,25 +387,25 @@ namespace LANDZO_TS {
     
     //% blockId="DS18B20_read" block="温度传感器数值"
     //% weight=50
-    export function DS18B20() :number {
+    export function DS18B20_read() :number {
         return 0;
     }
     
     //% blockId="DHT11_read_temperature" block="温湿度传感器温度数值"
     //% weight=50
-    export function DHT11_temperature() :number {
+    export function DHT11_read_temperature() :number {
         return 0;
     }
     
     //% blockId="DHT11_read_humidity" block="温湿度传感器湿度数值"
     //% weight=50
-    export function DHT11_humidity() :number {
+    export function DHT11_read_humidity() :number {
         return 0;
     }
 
     //% blockId="Ultrasonic_read" block="超声波距离值"
     //% weight=50
-    export function Ultrasonic() :number {
+    export function Ultrasonic_read() :number {
         return proto_chaoshengbo;
     }
     
@@ -422,14 +422,14 @@ namespace LANDZO_TS {
     }
     
 
-    //% blockId=landzobit_servo block="舵机|%index|角度 %degree"
+    //% blockId=Servo_set block="舵机|%index|角度 %degree"
     //% weight=100
     //% degree.min=0 degree.max=180
-    export function Servo(index: Servos, degree: number): void {
+    export function Servo_set(index: Servos, degree: number): void {
         write_2_motor(DUOJI, 2, index, degree, 0, 0);
     }
 
-    //% blockId=landzobit_motor_run block="电机|%index|速度 %speed"
+    //% blockId=MotorRun block="电机|%index|速度 %speed"
     //% weight=85
     //% speed.min=-255 speed.max=255
     export function MotorRun(index: Motors, speed: number): void {
@@ -455,7 +455,7 @@ namespace LANDZO_TS {
     }
 
 
-    //% blockId=landzobit_motor_dual block="电机1速度 %speed1 电机2速度 %speed2"
+    //% blockId=MotorRunDual block="电机1速度 %speed1 电机2速度 %speed2"
     //% weight=84
     //% speed1.min=-255 speed1.max=255
     //% speed2.min=-255 speed2.max=255
@@ -472,7 +472,7 @@ namespace LANDZO_TS {
 		write_2_motor(DIANJI, 2, index, 0, speed2, 0);
     }
 
-    //% blockId=landzobit_motor_rundelay block="电机|%index|速度 %speed|延时 %delay|s"
+    //% blockId=MotorRunDelay block="电机|%index|速度 %speed|延时 %delay|s"
     //% weight=81
     //% speed.min=-255 speed.max=255
     export function MotorRunDelay(index: Motors, speed: number, delay: number): void {
@@ -481,13 +481,13 @@ namespace LANDZO_TS {
         MotorRun(index, 0);
     }
 
-    //% blockId=landzobit_stop block="电机停止|%index|"
+    //% blockId=MotorStop block="电机停止|%index|"
     //% weight=80
     export function MotorStop(index: Motors): void {
         MotorRun(index, 0);
     }
 
-    //% blockId=landzobit_stop_all block="停止所有电机"
+    //% blockId=MotorStopAll block="停止所有电机"
     //% weight=79
     //% blockGap=50
     export function MotorStopAll(): void {
