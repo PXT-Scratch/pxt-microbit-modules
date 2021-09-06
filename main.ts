@@ -323,7 +323,7 @@ namespace LANDZO_TS {
 	//% blockId="MAX7219_show_letter" block="点阵屏|%where|显示字符 s %s" icon="\uf00a"
     //% weight=90 blockGap=8
     export function MAX7219_show_letter(where: number, what: LETTER): void {
-		write_2_sensor(SMG_DZP, 3, DZP_MODE, where, what&0xff, 0);
+		write_2_sensor(SMG_DZP, 3, DZP_SMG_0 | DZP_MODE, where, what&0xff, 0);
 	}
 	
     //% blockId="RGB_set" block="RGB灯 |红%r|绿%g|蓝%b"
@@ -338,13 +338,13 @@ namespace LANDZO_TS {
     //% blockId="SMG_Off" block="关闭数码管"
     //% weight=90 blockGap=8
     export function SMG_Off() :void {
-        write_2_sensor(SMG_DZP, 3, SMG_MODE, 0, 0, 0);
+        write_2_sensor(SMG_DZP, 3, DZP_SMG_0 | SMG_MODE, 0, 0, 0);
     }
     
     //% blockId="SMG_set" block="数码管显示 %r"
     //% weight=90 blockGap=8
     export function SMG_set(num: number) :void {
-        write_2_sensor(SMG_DZP, 3, SMG_MODE, num&0xff, num>>8, 0);
+        write_2_sensor(SMG_DZP, 3, DZP_SMG_0 | SMG_MODE, num&0xff, num>>8, 0);
     }
 	
     //% blockId="GPIO_Read_Analog" block="|%io|端口模拟值"
@@ -384,7 +384,7 @@ namespace LANDZO_TS {
         write_2_sensor(DIO, 2, io, d, 0, 0);
     }
     
-    
+/*    
     //% blockId="DS18B20_read" block="温度传感器数值"
     //% weight=50
     export function DS18B20_read() :number {
@@ -402,7 +402,7 @@ namespace LANDZO_TS {
     export function DHT11_read_humidity() :number {
         return 0;
     }
-
+*/
     //% blockId="Ultrasonic_read" block="超声波距离值"
     //% weight=50
     export function Ultrasonic_read() :number {
