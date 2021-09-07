@@ -326,7 +326,7 @@ namespace LANDZO_TS {
 	//% blockId="MAX7219_show_letter" block="点阵屏|%where|显示字符 s %s" icon="\uf00a"
     //% weight=90 blockGap=8
     export function MAX7219_show_letter(where: number, what: LETTER): void {
-		write_2_sensor(SMG_DZP, 3, DZP_SMG_0 | DZP_MODE, where, what&0xff, 0);
+		write_2_sensor(SMG_DZP, 3, where | DZP_MODE, what&0xff, 0, 0);
 	}
 	
     //% blockId="RGB_set" block="RGB灯 |红%r|绿%g|蓝%b"
