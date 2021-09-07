@@ -338,13 +338,13 @@ namespace LANDZO_TS {
     //% blockId="SMG_Off" block="关闭数码管"
     //% weight=90 blockGap=8
     export function SMG_Off() :void {
-        write_2_sensor(SMG_DZP, 3, DZP_SMG_0 | SMG_MODE, 0, 0, 0);
+        write_2_sensor(SMG_DZP, 3, DZP_SMG_1 | SMG_MODE, 0, 0, 0);
     }
     
     //% blockId="SMG_set" block="数码管显示 %r"
     //% weight=90 blockGap=8
     export function SMG_set(num: number) :void {
-        write_2_sensor(SMG_DZP, 3, DZP_SMG_0 | SMG_MODE, num&0xff, num>>8, 0);
+        write_2_sensor(SMG_DZP, 3, DZP_SMG_1 | SMG_MODE, num&0xff, num>>8, 0);
     }
 	
     //% blockId="GPIO_Read_Analog" block="|%io|端口模拟值"
