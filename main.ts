@@ -467,12 +467,10 @@ namespace LANDZO_TS {
         if (speed1 < 0) {
 			index = index | 0x08;
 		}
-		write_2_motor(DIANJI, 2, index, speed1, 0, 0);
-
 		if (speed2 < 0) {
 			index = index | 0x04;
 		}
-		write_2_motor(DIANJI, 2, index, 0, speed2, 0);
+		write_2_motor(DIANJI, 2, index, speed1, speed2, 0);
     }
 
     //% blockId=MotorRunDelay block="电机|%index|速度 %speed|延时 %delay|s"
