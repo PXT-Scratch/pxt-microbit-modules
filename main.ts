@@ -441,19 +441,19 @@ namespace LANDZO_TS {
 			if (speed < 0) {
 				index = index | 0x08;
 			}
-			write_2_motor(DIANJI, 2, index, speed, 0, 0);
+			write_2_motor(DIANJI, 4, index, speed, 0, 0);
 		} else
         if (index == M2) {
 			if (speed < 0) {
 				index = index | 0x04;
 			}
-			write_2_motor(DIANJI, 2, index, 0, speed, 0);
+			write_2_motor(DIANJI, 4, index, 0, speed, 0);
 		} else
 		if (index == M3) {
 			if (speed < 0) {
 				index = index | 0x02;
 			}
-			write_2_motor(DIANJI, 2, index, 0, 0, speed);
+			write_2_motor(DIANJI, 4, index, 0, 0, speed);
 		}
     }
 
@@ -470,7 +470,7 @@ namespace LANDZO_TS {
 		if (speed2 < 0) {
 			index = index | 0x04;
 		}
-		write_2_motor(DIANJI, 2, index, speed1, speed2, 0);
+		write_2_motor(DIANJI, 4, index, speed1, speed2, 0);
     }
 
     //% blockId=MotorRunDelay block="电机|%index|速度 %speed|延时 %delay|s"
@@ -492,7 +492,7 @@ namespace LANDZO_TS {
     //% weight=79
     //% blockGap=50
     export function MotorStopAll(): void {
-        write_2_motor(DIANJI, 2, M1 | M2 | M3, 0, 0, 0);
+        write_2_motor(DIANJI, 4, M1 | M2 | M3, 0, 0, 0);
     }
      
 }
