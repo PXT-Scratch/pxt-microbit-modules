@@ -70,8 +70,6 @@ namespace LANDZO_TS {
 	const BUJINDIANJI = 10;
 	const DIANJI = 11;
 	
-	const DZP_SMG_0 = 0x00;
-	const DZP_SMG_1 = 0x80;
 	const DZP_MODE = 0x00;
 	const SMG_MODE = 0x40;
 	const DZP_SMG_INIT = 0x20;
@@ -168,6 +166,11 @@ namespace LANDZO_TS {
 		Zhong = 36,
 		Guo = 37,
     } 
+	
+	export enum DZP_SMG_SELECT {
+		DZP_SMG_0 = 0x00,
+		DZP_SMG_1 = 0x80,
+	}
 	
     export enum STATE {
         RESET = 0,
@@ -334,17 +337,17 @@ namespace LANDZO_TS {
     export function RGB_set(r: number, g: number, b: number) :void {
         write_2_sensor(RGB, 3, r, g, b, 0);
     }
-    
+    /*
     //% blockId="SMG_Off" block="关闭数码管"
     //% weight=90 blockGap=8
     export function SMG_Off() :void {
         write_2_sensor(SMG_DZP, 3, DZP_SMG_1 | SMG_MODE, 0, 0, 0);
     }
-    
-    //% blockId="SMG_set" block="数码管显示 %r"
+    */
+    //% blockId="SMG_set" block="数码管|%where|显示 %num"
     //% weight=90 blockGap=8
-    export function SMG_set(num: number) :void {
-        write_2_sensor(SMG_DZP, 3, DZP_SMG_1 | SMG_MODE, num&0xff, num>>8, 0);
+    export function SMG_set(where: DZP_SMG_SELECT, num: number) :void {
+        write_2_sensor(SMG_DZP, 3, where | SMG_MODE, num&0xff, num>>8, 0);
     }
 	
     //% blockId="GPIO_Read_Analog" block="|%io|端口模拟值"
