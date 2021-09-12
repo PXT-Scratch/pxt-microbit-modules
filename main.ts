@@ -232,9 +232,17 @@ namespace LANDZO_TS {
 				proto_gdio1 = (datas[0] & 0x02) >> 1;
 				proto_gdio2 = (datas[0] & 0x01);
 				
-				proto_chaoshengbo = datas[1] + (datas[2] << 8);
-				proto_hongwaixunji1 = (datas[3] & 0x80) >> 7;
-				proto_hongwaixunji2 = (datas[3] & 0x40) >> 6;
+				// old vesion
+				// proto_chaoshengbo = datas[1] + (datas[2] << 8);
+				// proto_hongwaixunji1 = (datas[3] & 0x80) >> 7;
+				// proto_hongwaixunji2 = (datas[3] & 0x40) >> 6;
+				
+				// new version
+				proto_chaoshengbo = datas[1];
+				proto_hongwaixunji1 = (datas[2] & 0x80) >> 7;
+				proto_hongwaixunji2 = (datas[3] & 0x80) >> 7;
+				proto_dht11_temp = data[2] & 0x7f;
+				proto_dht11_humi = data[3] & 0x7f;
 			}
 			break;
 			
@@ -393,19 +401,20 @@ namespace LANDZO_TS {
     export function DS18B20_read() :number {
         return 0;
     }
+*/
     
     //% blockId="DHT11_read_temperature" block="温湿度传感器温度数值"
     //% weight=50
     export function DHT11_read_temperature() :number {
-        return 0;
+        return proto_dht11_temp;
     }
     
     //% blockId="DHT11_read_humidity" block="温湿度传感器湿度数值"
     //% weight=50
     export function DHT11_read_humidity() :number {
-        return 0;
+        return proto_dht11_humi;
     }
-*/
+
     //% blockId="Ultrasonic_read" block="超声波距离值"
     //% weight=50
     export function Ultrasonic_read() :number {
