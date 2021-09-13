@@ -241,8 +241,8 @@ namespace LANDZO_TS {
 				proto_chaoshengbo = datas[1];
 				proto_hongwaixunji1 = (datas[2] & 0x80) >> 7;
 				proto_hongwaixunji2 = (datas[3] & 0x80) >> 7;
-				proto_dht11_temp = data[2] & 0x7f;
-				proto_dht11_humi = data[3] & 0x7f;
+				proto_dht11_temp = datas[2] & 0x7f;
+				proto_dht11_humi = datas[3] & 0x7f;
 			}
 			break;
 			
