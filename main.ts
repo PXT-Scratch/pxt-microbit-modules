@@ -123,8 +123,9 @@ namespace LANDZO_TS {
     export enum IO_DIGITAL_W {
         P3 = 0x01,
         //P4 = 0x02,
-        P5 = 0x03,
-        P6 = 0x04,
+        P5 = 0x02,
+        P6 = 0x03,
+		P7 = 0x04,
     }  
 
 	export enum LETTER {
