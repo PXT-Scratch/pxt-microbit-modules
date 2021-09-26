@@ -77,7 +77,7 @@ namespace LANDZO_TS {
 	const P1 = 0xb0;
 	const P2 = 0xb1;
 	const P3 = 0xc1;
-	const P4 = 0xc2;
+	//const P4 = 0xc2;
 	const P5 = 0xc3;
 	const P6 = 0xc4;
 	const GP1 = 0xb2;
@@ -112,7 +112,7 @@ namespace LANDZO_TS {
         P1 = 0xb0,
         P2 = 0xb1,
         P3 = 0xc1,
-        P4 = 0xc2,
+        //P4 = 0xc2,
         P5 = 0xc3,
         P6 = 0xc4,
         GP1 = 0xb2,
@@ -121,7 +121,7 @@ namespace LANDZO_TS {
     
     export enum IO_DIGITAL_W {
         P3 = 0x01,
-        P4 = 0x02,
+        //P4 = 0x02,
         P5 = 0x03,
         P6 = 0x04,
     }  
@@ -181,13 +181,13 @@ namespace LANDZO_TS {
         S1 = 0x01,
         S2 = 0x02,
         S3 = 0x03,
-        S4 = 0x04,
     }
 
     export enum Motors {
         M1 = 0x80,
         M2 = 0x40,
         M3 = 0x20,
+		M4 = 0x10,
     }
 
 
@@ -380,7 +380,7 @@ namespace LANDZO_TS {
 			case P1: return proto_dio1;
 			case P2: return proto_dio2;
 			case P3: return proto_dio3;
-			case P4: return proto_dio4;
+			//case P4: return proto_dio4;
 			case P5: return proto_dio5;
 			case P6: return proto_dio6;
 			case GP1: return proto_gdio1;
@@ -464,6 +464,12 @@ namespace LANDZO_TS {
 			}
 			write_2_motor(DIANJI, 4, index, 0, 0, speed);
 		}
+		if (index == M4) {
+			if (speed < 0) {
+				index = index | 0x01;
+			}
+			write_2_motor(DIANJI, 4, index, 0, 0, speed);
+		}
     }
 
 
@@ -501,7 +507,7 @@ namespace LANDZO_TS {
     //% weight=79
     //% blockGap=50
     export function MotorStopAll(): void {
-        write_2_motor(DIANJI, 4, M1 | M2 | M3, 0, 0, 0);
+        write_2_motor(DIANJI, 4, M1 | M2 | M3 | M4, 0, 0, 0);
     }
      
 }
