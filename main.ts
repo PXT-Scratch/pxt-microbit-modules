@@ -86,6 +86,7 @@ namespace LANDZO_TS {
 	const M1 = 0x80;
     const M2 = 0x40;
     const M3 = 0x20;
+	const M4 = 0x10;
 	
     // const BASE_BOARD_I2C_ADDR = 0x30
     // const JOY_BOARD_I2C_ADDR = 0x20
