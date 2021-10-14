@@ -125,7 +125,7 @@ namespace LANDZO_TS {
         //P4 = 0x02,
         P5 = 0x02,
         P6 = 0x03,
-		P7 = 0x04,
+		//P7 = 0x04,
     }  
 
 	export enum LETTER {
@@ -452,25 +452,25 @@ namespace LANDZO_TS {
 			if (speed < 0) {
 				index = index | 0x08;
 			}
-			write_2_motor(DIANJI, 4, index, speed, 0, 0);
+			write_2_motor(DIANJI, 4, index, Math.abs(speed), 0, 0);
 		} else
         if (index == M2) {
 			if (speed < 0) {
 				index = index | 0x04;
 			}
-			write_2_motor(DIANJI, 4, index, 0, speed, 0);
+			write_2_motor(DIANJI, 4, index, 0, Math.abs(speed), 0);
 		} else
 		if (index == M3) {
 			if (speed < 0) {
 				index = index | 0x02;
 			}
-			write_2_motor(DIANJI, 4, index, 0, 0, speed);
+			write_2_motor(DIANJI, 4, index, 0, 0, Math.abs(speed));
 		}
 		if (index == M4) {
 			if (speed < 0) {
 				index = index | 0x01;
 			}
-			write_2_motor(DIANJI, 4, index, 0, 0, speed);
+			write_2_motor(DIANJI, 4, index, 0, 0, Math.abs(speed));
 		}
     }
 
@@ -487,7 +487,7 @@ namespace LANDZO_TS {
 		if (speed2 < 0) {
 			index = index | 0x04;
 		}
-		write_2_motor(DIANJI, 4, index, speed1, speed2, 0);
+		write_2_motor(DIANJI, 4, index, Math.abs(speed1), Math.abs(speed2), 0);
     }
 
     //% blockId=MotorRunDelay block="电机|%index|速度 %speed|延时 %delay|s"
