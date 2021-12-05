@@ -320,6 +320,9 @@ namespace LANDZO_TS {
 			SerialPin.P13,
 			BaudRate.BaudRate115200
 		)
+		
+		write_proto(0x02, 0xe7, 0, 0, 0, 0, 0);
+		write_proto(0x03, 0xe7, 0, 0, 0, 0, 0);
 	}
 	
 	//% blockId="DUBLE_run" block="天枢扩展模块运行" icon="\uf00a"
@@ -332,11 +335,18 @@ namespace LANDZO_TS {
 			}
 		}
 	}
-    
+	
+    /*
 	//% blockId="MAX7219_show_letter" block="点阵屏|%where|显示字符 s %s" icon="\uf00a"
     //% weight=90 blockGap=8
     export function MAX7219_show_letter(where: number, what: LETTER): void {
 		write_2_sensor(SMG_DZP, 3, where | DZP_MODE, what&0xff, 0, 0);
+	}
+	*/
+	//% blockId="MAX7219_show_letter" block="点阵屏显示字符 s %s" icon="\uf00a"
+    //% weight=90 blockGap=8
+    export function MAX7219_show_letter(what: LETTER): void {
+		write_2_sensor(SMG_DZP, 3, DZP_SMG_1 | DZP_MODE, what&0xff, 0, 0);
 	}
 	
     //% blockId="RGB_set" block="RGB灯 |红%r|绿%g|蓝%b"
@@ -354,10 +364,17 @@ namespace LANDZO_TS {
         write_2_sensor(SMG_DZP, 3, DZP_SMG_1 | SMG_MODE, 0, 0, 0);
     }
     */
+	/*
     //% blockId="SMG_set" block="数码管|%where|显示 %num"
     //% weight=90 blockGap=8
     export function SMG_set(where: DZP_SMG_SELECT, num: number) :void {
         write_2_sensor(SMG_DZP, 3, where | SMG_MODE, num&0xff, num>>8, 0);
+    }
+	*/
+	//% blockId="SMG_set" block="数码管显示 %num"
+    //% weight=90 blockGap=8
+    export function SMG_set(num: number) :void {
+        write_2_sensor(SMG_DZP, 3, DZP_SMG_0 | SMG_MODE, num&0xff, num>>8, 0);
     }
 	
     //% blockId="GPIO_Read_Analog" block="|%io|端口模拟值"
