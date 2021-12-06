@@ -73,7 +73,9 @@ namespace LANDZO_TS {
 	const DZP_MODE = 0x00;
 	const SMG_MODE = 0x40;
 	const DZP_SMG_INIT = 0x20;
-	
+	const DZP_SMG_0 = 0x00;
+	const DZP_SMG_1 = 0x80;
+
 	const P1 = 0xb0;
 	const P2 = 0xb1;
 	const P3 = 0xc1;
