@@ -55,6 +55,8 @@ namespace LANDZO_TS {
 	let proto_dht11_temp: number = 0;
 	let proto_dht11_humi: number = 0;
 	
+	let user_systick: number = 0;
+	
 	const UCP_HEAD = 0xa1
 	
 	const DIO = 0;
@@ -210,12 +212,12 @@ namespace LANDZO_TS {
 	
 	function write_2_motor(cmd: number, len: number, dat0: number, dat1: number, dat2: number, dat3: number): void {
 		write_proto(0x02, cmd, len, dat0, dat1, dat2, dat3);
-		//basic.pause(400);
+		basic.pause(200);
 	}
 	
 	function write_2_sensor(cmd: number, len: number, dat0: number, dat1: number, dat2: number, dat3: number): void {
 		write_proto(0x03, cmd, len, dat0, dat1, dat2, dat3);
-		//basic.pause(400);
+		basic.pause(200);
 	}
 	
 	function proto_deal(addr: number, cmd: number, datas: Buffer, len: number): void {
@@ -338,6 +340,11 @@ namespace LANDZO_TS {
 			for (let i = 0; i <= bufs.length - 1; i++) {
 				proto_analyze(bufs[i])
 			}
+		}
+		
+		if (user_systick >= control.millis()) {
+			user_systick = control.millis() + 500;
+			
 		}
 	}
 	
