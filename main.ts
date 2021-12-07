@@ -210,10 +210,12 @@ namespace LANDZO_TS {
 	
 	function write_2_motor(cmd: number, len: number, dat0: number, dat1: number, dat2: number, dat3: number): void {
 		write_proto(0x02, cmd, len, dat0, dat1, dat2, dat3);
+		basic.pause(400);
 	}
 	
 	function write_2_sensor(cmd: number, len: number, dat0: number, dat1: number, dat2: number, dat3: number): void {
 		write_proto(0x03, cmd, len, dat0, dat1, dat2, dat3);
+		basic.pause(400);
 	}
 	
 	function proto_deal(addr: number, cmd: number, datas: Buffer, len: number): void {
