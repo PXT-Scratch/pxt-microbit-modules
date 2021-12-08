@@ -212,12 +212,12 @@ namespace LANDZO_TS {
 	
 	function write_2_motor(cmd: number, len: number, dat0: number, dat1: number, dat2: number, dat3: number): void {
 		write_proto(0x02, cmd, len, dat0, dat1, dat2, dat3);
-		basic.pause(200);
+		basic.pause(400);
 	}
 	
 	function write_2_sensor(cmd: number, len: number, dat0: number, dat1: number, dat2: number, dat3: number): void {
 		write_proto(0x03, cmd, len, dat0, dat1, dat2, dat3);
-		basic.pause(200);
+		basic.pause(400);
 	}
 	
 	function proto_deal(addr: number, cmd: number, datas: Buffer, len: number): void {
@@ -367,7 +367,7 @@ namespace LANDZO_TS {
     //% g.min=0 g.max=1
     //% b.min=0 b.max=1
     export function RGB_set(r: number, g: number, b: number) :void {
-        write_2_sensor(RGB, 3, r, g, b, 0);
+        write_2_sensor(RGB, 3, b, g, r, 0);
     }
     /*
     //% blockId="SMG_Off" block="关闭数码管"
