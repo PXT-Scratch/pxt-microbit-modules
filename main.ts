@@ -330,7 +330,7 @@ namespace LANDZO_TS {
 			BaudRate.BaudRate115200
 		)
 		basic.pause(400);
-		write_proto(0x02, 0xe7, 0, 0, 0, 0, 0);
+		MotorStopAll()
 		basic.pause(400);
 		write_proto(0x03, 0xe7, 0, 0, 0, 0, 0);
 	}
