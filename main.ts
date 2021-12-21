@@ -329,9 +329,9 @@ namespace LANDZO_TS {
 			SerialPin.P13,
 			BaudRate.BaudRate115200
 		)
-		basic.pause(400);
+		basic.pause(500);
 		MotorStopAll()
-		basic.pause(400);
+		basic.pause(1000);	// 400
 		write_proto(0x03, 0xe7, 0, 0, 0, 0, 0);
 	}
 	
@@ -436,7 +436,12 @@ namespace LANDZO_TS {
         return 0;
     }
 */
-    
+    //% blockId="Hall_magnetic_sensor" block="霍尔磁力传感器"
+    //% weight=50
+    export function Hall_magnetic_sensor() :number {
+       return proto_gdio2;
+    }
+	
     //% blockId="DHT11_read_temperature" block="温湿度传感器温度数值"
     //% weight=50
     export function DHT11_read_temperature() :number {
