@@ -1,5 +1,5 @@
 {
-    "name": "LandzoTianshu",
+    "name": "cookieModules",
     "version": "0.0.6",
     "description": "makecode Landzo Tianshu package for micro:bit",
     "license": "MIT",
@@ -9,8 +9,8 @@
     "files": [
         "README.md",
         "main.ts",
-        "_locales/zh/pxt-cookie-modules-strings.json",
-        "_locales/zh/pxt-cookie-modules-jsdoc-strings.json"
+        "_locales/zh/cookieModules-strings.json",
+        "_locales/zh/cookieModules-jsdoc-strings.json"
     ],
     "testFiles": [
         "test.ts"
