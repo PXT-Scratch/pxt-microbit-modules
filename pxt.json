@@ -1,7 +1,7 @@
 {
-    "name": "COOKIE",
+    "name": "LandzoTianshu",
     "version": "0.0.6",
-    "description": "makecode COOKIE package for micro:bit",
+    "description": "makecode Landzo Tianshu package for micro:bit",
     "license": "MIT",
     "dependencies": {
         "core": "*"
@@ -9,8 +9,8 @@
     "files": [
         "README.md",
         "main.ts",
-        "_locales/zh/COOKIE-strings.json",
-        "_locales/zh/COOKIE-jsdoc-strings.json"
+        "_locales/zh/LandzoTianshu-strings.json",
+        "_locales/zh/LandzoTianshus-jsdoc-strings.json"
     ],
     "testFiles": [
         "test.ts"
