@@ -80,7 +80,7 @@ function validate(str: String): Boolean {
 /**
  * Custom blocks
  */
-//% weight=100 color=#0fbc11 icon="T" block="COOKIE扩展模块"    
+//% weight=100 color=#0fbc11 icon=""    
 namespace cookieModules {
     const PM_ADDRESS = 0x26//电位器26-29//3031不好用
     const SEG_ADDRESS = 0x32//数码管32-35
