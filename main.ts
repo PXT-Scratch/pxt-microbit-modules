@@ -206,4 +206,178 @@ namespace cookieModules {
         data = dataL + dataH * 256;
         return (data)
     }
+    /**
+    * TODO: 读取土壤湿度值。
+    */
+    //% blockId=read_SoilMoisture block="read %module SoilMoisture data"
+    //% weight=65
+    export function readSoilMoistureData(module: ModuleIndex): number {
+        i2cWriteRegister(SOILMOISTURE_ADDRESS + module, 0x00, 0x01);
+        let dataL;
+        let dataH;
+        let data;
+        dataL = i2cReadRegister(SOILMOISTURE_ADDRESS + module, 0x01, NumberFormat.UInt8LE);
+        dataH = i2cReadRegister(SOILMOISTURE_ADDRESS + module, 0x02, NumberFormat.UInt8LE);
+        data = dataL + dataH * 256;
+        return (data)
+    }
+    /**
+    * TODO: 读取浊度值。
+    */
+    //% blockId=read_turbidity block="read %module turbidity data"
+    //% weight=65
+    export function readTurbidityData(module: ModuleIndex): number {
+        i2cWriteRegister(TURBIDITY_ADDRESS + module, 0x00, 0x01);
+        let dataL;
+        let dataH;
+        let data;
+        dataL = i2cReadRegister(TURBIDITY_ADDRESS + module, 0x01, NumberFormat.UInt8LE);
+        dataH = i2cReadRegister(TURBIDITY_ADDRESS + module, 0x02, NumberFormat.UInt8LE);
+        data = dataL + dataH * 256;
+        return (data)
+    }
+    /**
+    *TODO: 读取PH值。
+    */
+    //% blockId=read_ph block="read %module ph data"
+    //% weight=65
+    export function readPhData(module: ModuleIndex): number {
+        i2cWriteRegister(PH_ADDRESS + module, 0x00, 0x01);
+        let dataL;
+        let dataH;
+        let data;
+        dataL = i2cReadRegister(PH_ADDRESS + module, 0x01, NumberFormat.UInt8LE);
+        dataH = i2cReadRegister(PH_ADDRESS + module, 0x02, NumberFormat.UInt8LE);
+        data = dataL + dataH * 256;
+        data = data / 10;
+        return (data)
+    }
+    /**
+    * TODO: 读取超声波值。
+    */
+    //% blockId=read_Distance block="read %module SonarDistance data"
+    //% weight=65
+    export function readDistance(module: ModuleIndex): number {
+        i2cWriteRegister(SONAR_ADDRESS + module, 0x00, 0x01);
+        let dataL;
+        let dataH;
+        let data;
+        dataL = i2cReadRegister(SONAR_ADDRESS + module, 0x01, NumberFormat.UInt8LE);
+        dataH = i2cReadRegister(SONAR_ADDRESS + module, 0x02, NumberFormat.UInt8LE);
+        data = dataL + dataH * 256;
+        data = data / 10;
+        return (data)
+    }
+    /**
+     * TODO: 读取温湿度值。
+     * @param value describe value here, eg: 5
+     */
+    //% blockId=read_hm block="read %module %TH value"
+    //% weight=65
+    export function readTempHumidity(module: ModuleIndex, TH: THMesure): number {
+        i2cWriteRegister(HM_ADDRESS + module, 0x00, 0x01);
+        let dataL;
+        let dataH;
+        let humidity;
+        let temperature;
+        let data
+        if (TH == 0) {
+            dataL = i2cReadRegister(HM_ADDRESS + module, 0x01, NumberFormat.UInt8LE);
+            dataH = i2cReadRegister(HM_ADDRESS + module, 0x02, NumberFormat.UInt8LE);
+            humidity = dataL + dataH * 256;
+            data = humidity / 10;
+        }
+        if (TH == 1) {
+            dataL = i2cReadRegister(HM_ADDRESS + module, 0x03, NumberFormat.UInt8LE);
+            dataH = i2cReadRegister(HM_ADDRESS + module, 0x04, NumberFormat.UInt8LE);
+            temperature = dataL + dataH * 256;
+            data = temperature / 10;
+        }
+        return (data);
+    }
+
+    /**
+    * TODO: 读取四路ADC值。
+    * @param value describe value here, eg: 5
+    */
+    //% blockId=read_ad block="read %index adc value"
+    //% weight=65
+    export function readAdcData(index: ADCIndex): number {
+        i2cWriteRegister(ADC_ADDRESS, 0x00, 0x01);
+        let dataL;
+        let dataH;
+        let data;
+        if (index == 0) {
+            dataL = i2cReadRegister(ADC_ADDRESS, 0x01, NumberFormat.UInt8LE);
+            dataH = i2cReadRegister(ADC_ADDRESS, 0x02, NumberFormat.UInt8LE);
+            data = dataL + dataH * 256;
+        }
+        if (index == 1) {
+            dataL = i2cReadRegister(ADC_ADDRESS, 0x03, NumberFormat.UInt8LE);
+            dataH = i2cReadRegister(ADC_ADDRESS, 0x04, NumberFormat.UInt8LE);
+            data = dataL + dataH * 256;
+        }
+        if (index == 2) {
+            dataL = i2cReadRegister(ADC_ADDRESS, 0x05, NumberFormat.UInt8LE);
+            dataH = i2cReadRegister(ADC_ADDRESS, 0x06, NumberFormat.UInt8LE);
+            data = dataL + dataH * 256;
+        }
+        if (index == 3) {
+            dataL = i2cReadRegister(ADC_ADDRESS, 0x07, NumberFormat.UInt8LE);
+            dataH = i2cReadRegister(ADC_ADDRESS, 0x08, NumberFormat.UInt8LE);
+            data = dataL + dataH * 256;
+        }
+        return (data);
+    }
+
+
+    /**
+    * TODO: 读取四路数字值。
+    * @param value describe value here, eg: 5
+    */
+    //% blockId=read_digital block="read %index digital value"
+    //% weight=65
+    export function readDigitalData(Pin: DigitalInPinIndex): number {
+        i2cWriteRegister(DigitalIn_ADDRESS, 0x00, 0x01);
+        let data;
+        if (Pin == 0) {
+            data = i2cReadRegister(DigitalIn_ADDRESS, 0x01, NumberFormat.UInt8LE);
+        }
+        if (Pin == 1) {
+            data = i2cReadRegister(DigitalIn_ADDRESS, 0x02, NumberFormat.UInt8LE);
+        }
+        if (Pin == 2) {
+            data = i2cReadRegister(DigitalIn_ADDRESS, 0x03, NumberFormat.UInt8LE);
+        }
+        if (Pin == 3) {
+            data = i2cReadRegister(DigitalIn_ADDRESS, 0x04, NumberFormat.UInt8LE);
+        }
+        return (data);
+    }
+    /**
+    * TODO:输出四路数字值。
+    * @param value describe value here, eg: 5
+    */
+    //% blockId=Digital_Output block="set %pin digital %state"
+    //% weight=65
+    export function setDigitalOutput(Pin: DigitalOutputPinIndex, state: DigitalOutputIndex) {
+        if (Pin == 0) {
+            i2cWriteRegister(DigitalOutPut_ADDRESS, Pin + 2, state);
+        }
+        if (Pin == 1) {
+            i2cWriteRegister(DigitalOutPut_ADDRESS, Pin + 2, state);
+        }
+        if (Pin == 2) {
+            i2cWriteRegister(DigitalOutPut_ADDRESS, Pin + 2, state);
+        }
+        if (Pin == 3) {
+            i2cWriteRegister(DigitalOutPut_ADDRESS, Pin + 2, state);
+        }
+        if (Pin == 4) {
+            i2cWriteRegister(DigitalOutPut_ADDRESS, Pin + 2, state);
+        }
+        if (Pin == 5) {
+            i2cWriteRegister(DigitalOutPut_ADDRESS, Pin + 2, state);
+        }
+    }
 }
