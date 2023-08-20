@@ -60,6 +60,16 @@ enum THMesure {
     //% block="temperature"
     temperature,
 }
+enum ServeIndex {
+    //% block="CH1"
+    CH1,
+    //% block="CH2"
+    CH2,
+    //% block="CH3"
+    CH3,
+    //% block="CH4"
+    CH4
+}
 function validate(str: String): Boolean {
     let isfloat = false;
     let len = str.length;
@@ -83,15 +93,16 @@ function validate(str: String): Boolean {
 //% weight=100 color=#0fbc11 icon=""    
 namespace cookieModules {
     const PM_ADDRESS = 0x26//电位器26-29//3031不好用
-    const SEG_ADDRESS = 0x32//数码管32-35
+    const SEG_ADDRESS = 0x22//数码管22-25
     const DigitalIn_ADDRESS = 0x36//单个//
     const DigitalOutPut_ADDRESS = 0x37//单个//
     const ADC_ADDRESS = 0x40//单个
-    const SONAR_ADDRESS = 0x52//52-55//
     const HM_ADDRESS = 0x41//41-44
     const PH_ADDRESS = 0x45//45-48
     const TURBIDITY_ADDRESS = 0x52//52-55
     const SOILMOISTURE_ADDRESS = 0x56//56-59
+    const SERVE_ADDRESS = 0x60//56-59
+    const SONAR_ADDRESS = 0x61//61-64//
     //将字符串格式化为UTF8编码的字节
     let writeUTF = function (str: String, isGetBytes?: boolean) {
         let back = [];
@@ -355,7 +366,7 @@ namespace cookieModules {
         return (data);
     }
     /**
-    * TODO:输出四路数字值。
+    * TODO: 输出四路数字值。
     * @param value describe value here, eg: 5
     */
     //% blockId=Digital_Output block="set %pin digital %state"
@@ -379,5 +390,27 @@ namespace cookieModules {
         if (Pin == 5) {
             i2cWriteRegister(DigitalOutPut_ADDRESS, Pin + 2, state);
         }
+    }
+        /**
+    * TODO:控制四路舵机。
+    * @param value describe value here, eg: 5
+    */
+    //% blockId=Serve_Output block="set %CH serve %angle"
+    //% angle.min=0 angle.max=180
+    //% weight=65
+    export function setServeOutput(CH: ServeIndex, angle: number) {
+        if (CH == 0) {
+            i2cWriteRegister(SERVE_ADDRESS, CH + 2, angle);
+        }
+        if (CH == 1) {
+            i2cWriteRegister(SERVE_ADDRESS, CH + 2, angle);
+        }
+        if (CH == 2) {
+            i2cWriteRegister(SERVE_ADDRESS, CH + 2, angle);
+        }
+        if (CH == 3) {
+            i2cWriteRegister(SERVE_ADDRESS, CH + 2, angle);
+        }
+        pause(100);
     }
 }
