@@ -1,7 +1,7 @@
 {
     "name": "cookieModules",
     "version": "0.0.6",
-    "description": "makecode Landzo Tianshu package for micro:bit",
+    "description": "makecode cookie package for micro:bit",
     "license": "MIT",
     "dependencies": {
         "core": "*"
